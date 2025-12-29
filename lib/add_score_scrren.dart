@@ -77,7 +77,7 @@ class _AddScoreScreenState extends State<AddScoreScreen> {
           children: [
             const SizedBox(height: 10),
 
-            // টিম ১ এর নাম
+
             CustomTextField(
               controller: _team1Controller,
               hintText: 'Team 1 Name (e.g. Argentina)',
@@ -86,7 +86,7 @@ class _AddScoreScreenState extends State<AddScoreScreen> {
             ),
             const SizedBox(height: 15),
 
-            // টিম ২ এর নাম
+
             CustomTextField(
               controller: _team2Controller,
               hintText: 'Team 2 Name (e.g. Brazil)',
@@ -101,7 +101,7 @@ class _AddScoreScreenState extends State<AddScoreScreen> {
                   child: CustomTextField(
                     controller: _team1ScoreController,
                     hintText: '0',
-                    lableText: 'Score 1',
+                    lableText: 'Team Score 1',
                     keyboardType: TextInputType.number,
                     icon: Icons.scoreboard,
                   ),
@@ -111,7 +111,7 @@ class _AddScoreScreenState extends State<AddScoreScreen> {
                   child: CustomTextField(
                     controller: _team2ScoreController,
                     hintText: '0',
-                    lableText: 'Score 2',
+                    lableText: 'Team2 Score 2',
                     keyboardType: TextInputType.number,
                     icon: Icons.scoreboard_outlined,
                   ),
