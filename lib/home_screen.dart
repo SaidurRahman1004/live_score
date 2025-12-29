@@ -118,40 +118,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  //delete
-  Future<void> _showDeleteDialog(context, String id) async {
-    final bool? _confirmDelete = await showDialog<bool>(
-      context: context,
-      builder: (_) => AlertDialog(
-        title: Text('Delete Trip'),
-        content: Text('Are you sure you want to delete this trip?'),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(false);
-            },
-            child: Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(true);
-            },
-            child: Text('Delete'),
-          ),
-        ],
-      ),
-    );
-    if (_confirmDelete == true) {
-      try {
-        await _dbServices.deleteFootballMatchData(id);
-        if (mounted) {
-          mySnkmsg('Trip Deleted Successfully', context);
-        }
-      } catch (e) {
-        if (mounted) {
-          mySnkmsg(e.toString(), context);
-        }
-      }
-    }
-  }
+
+
 }
