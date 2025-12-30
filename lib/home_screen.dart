@@ -42,7 +42,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   radius: 8,
                   backgroundColor: match.isRunning ? Colors.green : Colors.grey,
                 ),
-                title: Text('${match.team1Name} vs ${match.team2Name}'),
+                title: Row(
+                  children: [
+                    Text('${match.team1Name} vs ${match.team2Name}'),
+                    Badge(
+                      child: IconButton(onPressed: (){
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => MatchForms(match: match,)),
+                        );
+
+                      }, icon: Icon(Icons.edit)),
+                    ),
+                  ],
+                ),
                 subtitle: Text('Winner Team: ${match.winnerTeam}'),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -51,51 +64,46 @@ class _HomeScreenState extends State<HomeScreen> {
                       '${match.team1Score}:${match.team2Score}',
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
-                    IconButton(
-                      icon: const Icon(Icons.delete),
-                      onPressed: () async{
-                        if (match.id == null) {
-                          mySnkmsg('Error: Match ID not found, cannot delete!', context);
-                          return;
-                        }
-                        final bool? _confirmDelete = await showDialog<bool>(
-                          context: context,
-                          builder: (_) => AlertDialog(
-                            title: Text(' Delete Match'),
-                            content: Text('Are you sure you want to delete this Match?'),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop(false);
-                                },
-                                child: Text('Cancel'),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop(true);
-                                },
-                                child: Text('Delete'),
-                              ),
-                            ],
-                          ),
-                        );
-                        if (_confirmDelete == true) {
-                          try {
-                            await _dbServices.deleteFootballMatchData(match.id!);
-                            if (mounted) {
-                              mySnkmsg('Trip Deleted Successfully', context);
-                            }
-                          } catch (e) {
-                            if (mounted) {
-                              mySnkmsg(e.toString(), context);
-                            }
-                          }
-                        }
-                      },
-                    ),
                   ],
                 ),
-                onTap: () {
+                onLongPress: () async{
+                  if (match.id == null) {
+                    mySnkmsg('Error: Match ID not found, cannot delete!', context);
+                    return;
+                  }
+                  final bool? _confirmDelete = await showDialog<bool>(
+                    context: context,
+                    builder: (_) => AlertDialog(
+                      title: Text(' Delete Match'),
+                      content: Text('Are you sure you want to delete this Match?'),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop(false);
+                          },
+                          child: Text('Cancel'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop(true);
+                          },
+                          child: Text('Delete'),
+                        ),
+                      ],
+                    ),
+                  );
+                  if (_confirmDelete == true) {
+                    try {
+                      await _dbServices.deleteFootballMatchData(match.id!);
+                      if (mounted) {
+                        mySnkmsg('Trip Deleted Successfully', context);
+                      }
+                    } catch (e) {
+                      if (mounted) {
+                        mySnkmsg(e.toString(), context);
+                      }
+                    }
+                  }
 
                 },
               );
@@ -111,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (_) => AddScoreScreen()),
+            MaterialPageRoute(builder: (_) => MatchForms()),
           );
         },
       ),

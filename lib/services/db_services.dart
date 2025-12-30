@@ -11,9 +11,7 @@ class DbServices {
         .snapshots()
         .map(
           (snapshot) => snapshot.docs.map((doc) {
-            Map<String, dynamic> data = doc.data();
-            data['id'] = doc.id;
-            return FootballMatch.fromJson(data);
+            return FootballMatch.fromJson(doc.id, doc.data());
           }).toList(),
         );
   }
@@ -22,6 +20,12 @@ class DbServices {
   Future<void> addFootballMatchData(FootballMatch footballMatch) async {
     await _firestore.collection('football').add(footballMatch.toJson());
   }
+
+  //Update data
+  Future<void> updateFootballMatchData(FootballMatch footballMatch) async{
+    await _firestore.collection('football').doc(footballMatch.id).update(footballMatch.toJson());
+  }
+
 
   //dellet data
   Future<void> deleteFootballMatchData(String docId) async {

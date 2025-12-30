@@ -32,7 +32,7 @@ class FootballMatch {
   }
 
   //receive data from firebase
-  factory FootballMatch.fromJson(Map<String,dynamic> jsonData){
+  factory FootballMatch.fromJson(String id,Map<String,dynamic> jsonData){
     return FootballMatch(
       id: jsonData['id'],
       team1Name: jsonData['team1_name'],
