@@ -21,7 +21,6 @@ class FootballMatch {
   //sent data to firebase
   Map<String,dynamic> toJson(){
     return{
-      'id': id,
       'team1_name': team1Name,
       'team2_name': team2Name,
       'team1_score': team1Score,
@@ -34,13 +33,13 @@ class FootballMatch {
   //receive data from firebase
   factory FootballMatch.fromJson(String id,Map<String,dynamic> jsonData){
     return FootballMatch(
-      id: jsonData['id'],
-      team1Name: jsonData['team1_name'],
-      team2Name: jsonData['team2_name'],
-      team1Score: jsonData['team1_score'],
-      team2Score: jsonData['team2_score'],
-      isRunning: jsonData['is_running'],
-      winnerTeam: jsonData['winner_team'],
+      id: id,
+      team1Name: jsonData['team1_name']?? '',
+      team2Name: jsonData['team2_name']?? '',
+      team1Score: jsonData['team1_score']?? 0,
+      team2Score: jsonData['team2_score']?? 0,
+      isRunning: jsonData['is_running']??false,
+      winnerTeam: jsonData['winner_team']?? 'Pending',
     );
   }
 
