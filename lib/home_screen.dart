@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:live_score/models/score_model.dart';
+import 'package:live_score/services/auth_services.dart';
 import 'package:live_score/services/db_services.dart';
 import 'package:live_score/widgets/custo_snk.dart';
 
@@ -14,11 +15,28 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final _dbServices = DbServices();
+  final AuthServices _authServices = AuthServices();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Live Score'), centerTitle: true),
+      appBar: AppBar(
+        title:  Column(
+          children: [
+            Text('Live Score'),
+            Text('${_authServices.currentUser?.displayName}'),
+          ],
+        ),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () async {
+              await _authServices.logout();
+            },
+            icon: Icon(Icons.logout_outlined),
+          ),
+        ],
+      ),
       body: StreamBuilder<List<FootballMatch>>(
         stream: _dbServices.getFootballMatchData(),
         builder: (_, asyncSnapshoot) {
@@ -46,13 +64,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     Text('${match.team1Name} vs ${match.team2Name}'),
                     Badge(
-                      child: IconButton(onPressed: (){
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (_) => MatchForms(match: match,)),
-                        );
-
-                      }, icon: Icon(Icons.edit)),
+                      child: IconButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => MatchForms(match: match),
+                            ),
+                          );
+                        },
+                        icon: Icon(Icons.edit),
+                      ),
                     ),
                   ],
                 ),
@@ -66,16 +88,21 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 ),
-                onLongPress: () async{
+                onLongPress: () async {
                   if (match.id == null) {
-                    mySnkmsg('Error: Match ID not found, cannot delete!', context);
+                    mySnkmsg(
+                      'Error: Match ID not found, cannot delete!',
+                      context,
+                    );
                     return;
                   }
                   final bool? _confirmDelete = await showDialog<bool>(
                     context: context,
                     builder: (_) => AlertDialog(
                       title: Text(' Delete Match'),
-                      content: Text('Are you sure you want to delete this Match?'),
+                      content: Text(
+                        'Are you sure you want to delete this Match?',
+                      ),
                       actions: [
                         TextButton(
                           onPressed: () {
@@ -104,7 +131,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       }
                     }
                   }
-
                 },
               );
             },
@@ -125,7 +151,4 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
-
-
 }

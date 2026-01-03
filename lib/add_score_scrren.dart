@@ -57,8 +57,8 @@ class _MatchFormsState extends State<MatchForms> {
     setState(() {
       _isLoading = true;
     });
-    final ts1 = int.parse(_team1ScoreController.text.trim());
-    final ts2 = int.parse(_team2ScoreController.text.trim());
+    final ts1 = int.tryParse(_team1ScoreController.text.trim()) ?? 0;
+    final ts2 = int.tryParse(_team2ScoreController.text.trim()) ?? 0;
 
     try {
       final matchs = FootballMatch(
