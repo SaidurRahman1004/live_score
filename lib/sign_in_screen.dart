@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:live_score/phone_auth_screen.dart';
 import 'package:live_score/services/auth_services.dart';
 import 'package:live_score/sign_up_screen.dart';
 import 'package:live_score/widgets/center_circular_indicator.dart';
@@ -86,6 +87,13 @@ class _SignInScreenState extends State<SignInScreen> {
                     },
                     child: const Text('Sign Up'),
                   ),
+                  const SizedBox(height: 10),
+                  OutlinedButton.icon(onPressed: (){
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const PhoneAuthScreen())
+                    );
+                  }, label: const Text("Sign in with Phone"),icon: const Icon(Icons.phone),)
                 ],
               )
 
